@@ -24,10 +24,6 @@ public class CountdownButton: CustomButton {
         super.init(coder: aDecoder)
     }
 
-    required init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-
     override public func setTitle(_ title: String?, for state: UIControl.State) {
         if state == .normal {
             normalTitle = title

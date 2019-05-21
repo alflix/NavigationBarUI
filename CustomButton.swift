@@ -18,14 +18,6 @@ import UIKit
         }
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
-    required override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-
     override public var isEnabled: Bool {
         didSet {
             alpha = isEnabled ? 1.0 : disableAlpha

@@ -79,10 +79,6 @@ public class LayoutButton: CustomButton {
         setup()
     }
 
-    required init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-
     private func setup() {
         self.titleLabel?.textAlignment = .center
     }
