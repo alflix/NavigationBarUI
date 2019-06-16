@@ -1,6 +1,6 @@
 //
 //  CustomButton.swift
-//  Ganguo
+//  GGUI
 //
 //  Created by John on 2019/3/12.
 //  Copyright © 2019 Ganguo. All rights reserved.
@@ -8,17 +8,26 @@
 
 import UIKit
 
-@IBDesignable public class CustomButton: UIButton {
+@IBDesignable
+open class CustomButton: UIButton {
     /// 置灰时的 alpha
-    public var disableAlpha: CGFloat = GGUI.CustomButton.disableAlpha
+    open var disableAlpha: CGFloat = GGUI.CustomButton.disableAlpha
     /// 文字的行数
-    @IBInspectable public var numberOfLines: Int = 1 {
+    @IBInspectable open dynamic var numberOfLines: Int = 1 {
         didSet {
             self.titleLabel?.numberOfLines = numberOfLines
         }
     }
 
-    override public var isEnabled: Bool {
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    required override public init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+
+    override open dynamic var isEnabled: Bool {
         didSet {
             alpha = isEnabled ? 1.0 : disableAlpha
         }

@@ -1,6 +1,6 @@
 //
 //  LayoutButton.swift
-//  Ganguo
+//  GGUI
 //
 //  Created by John on 2019/3/12.
 //  Copyright © 2019 Ganguo. All rights reserved.
@@ -77,6 +77,10 @@ public class LayoutButton: CustomButton {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
+    }
+
+    required init(frame: CGRect) {
+        super.init(frame: frame)
     }
 
     private func setup() {
