@@ -8,5 +8,6 @@ target 'Demo' do
     pod 'SwiftLint'
     pod 'FLEX'
     pod 'SwifterSwift'
+    pod 'Reusable'
     
 end

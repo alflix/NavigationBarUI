@@ -7,13 +7,18 @@
 //
 
 import UIKit
+import Reusable
 
-class SecondViewController: UIViewController {
-
+class SecondViewController: UIViewController, StoryboardBased {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-
         navigationAppearance.backgroundAlpha = 0
+        navigationAppearance.showShadowLine = false
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "5")?.original, style: .plain, target: self, action: #selector(pop))
+    }
+
+    @objc func pop() {
+        navigationController?.popViewController(animated: true)
     }
 }

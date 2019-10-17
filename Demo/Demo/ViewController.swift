@@ -7,15 +7,15 @@
 //
 
 import UIKit
+import Reusable
 
 class ViewController: UIViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "1"), style: .plain, target: self, action: #selector(push))
     }
 
     @objc func push() {
-        navigationController?.pushViewController(SecondViewController(), animated: true)
+        navigationController?.pushViewController(SecondViewController.instantiate(), animated: true)
     }
 }
