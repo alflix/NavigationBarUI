@@ -151,10 +151,6 @@ public extension UIColor {
 
         return UIColor(red: nowRed, green: nowGreen, blue: nowBlue, alpha: nowAlpha)
     }
-
-    static var defaultBlue: UIColor {
-        return UIColor.init(hexString: "0x007aff")!
-    }
 }
 
 public extension UIFont {
@@ -240,4 +236,35 @@ public func delay(_ time: TimeInterval, task: @escaping () -> Void) -> DelayTask
         }
     }
     return result
+}
+
+// MARK: - Initializers
+public extension UIImage {
+
+    /// SwifterSwift: Create UIImage from color and size.
+    ///
+    /// - Parameters:
+    ///   - color: image fill color.
+    ///   - size: image size.
+    convenience init(color: UIColor, size: CGSize) {
+        UIGraphicsBeginImageContextWithOptions(size, false, 1)
+
+        defer {
+            UIGraphicsEndImageContext()
+        }
+
+        color.setFill()
+        UIRectFill(CGRect(origin: .zero, size: size))
+
+        guard let aCgImage = UIGraphicsGetImageFromCurrentImageContext()?.cgImage else {
+            self.init()
+            return
+        }
+
+        self.init(cgImage: aCgImage)
+    }
+
+    var original: UIImage {
+        return withRenderingMode(.alwaysOriginal)
+    }
 }
