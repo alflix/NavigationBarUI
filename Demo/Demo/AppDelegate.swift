@@ -205,3 +205,39 @@ public struct GGUI {
         public static var appearance: NavigationAppearance = NavigationAppearance()
     }
 }
+
+public typealias DelayTask = (_ cancel: Bool) -> Void
+
+/// 延时执行任务
+///
+/// - Parameters:
+///   - time: 秒数
+///   - task: 任务
+/// - Returns: 可取消的 Block
+@discardableResult
+public func delay(_ time: TimeInterval, task: @escaping () -> Void) -> DelayTask? {
+    func dispatch_later(block: @escaping () -> Void) {
+        let after = DispatchTime.now() + time
+        DispatchQueue.main.asyncAfter(deadline: after, execute: block)
+    }
+
+    var closure: (() -> Void)? = task
+    var result: DelayTask?
+
+    let delayedClosure: DelayTask = { cancel in
+        if let internalClosure = closure, !cancel {
+            DispatchQueue.main.async(execute: internalClosure)
+        }
+        closure = nil
+        result = nil
+    }
+
+    result = delayedClosure
+
+    dispatch_later {
+        if let delayedClosure = result {
+            delayedClosure(false)
+        }
+    }
+    return result
+}

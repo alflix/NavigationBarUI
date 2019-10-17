@@ -19,12 +19,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="3" translatesAutoresizingMaskIntoConstraints="NO" id="pKc-SH-3Ph">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="3" translatesAutoresizingMaskIntoConstraints="NO" id="pKc-SH-3Ph">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="270"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="270" id="9SV-eV-Dk9"/>
+                                </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="pKc-SH-3Ph" firstAttribute="top" secondItem="cpQ-A4-ink" secondAttribute="top" id="4hT-Rh-vfv"/>
+                            <constraint firstItem="pKc-SH-3Ph" firstAttribute="leading" secondItem="cpQ-A4-ink" secondAttribute="leading" id="6pb-v9-Wam"/>
+                            <constraint firstItem="pKc-SH-3Ph" firstAttribute="leading" secondItem="cpQ-A4-ink" secondAttribute="leading" id="bC3-Lw-OwR"/>
+                            <constraint firstAttribute="trailing" secondItem="pKc-SH-3Ph" secondAttribute="trailing" id="dCA-5m-QQa"/>
+                            <constraint firstAttribute="trailing" secondItem="pKc-SH-3Ph" secondAttribute="trailing" id="gU4-ui-Zji"/>
+                            <constraint firstItem="pKc-SH-3Ph" firstAttribute="top" secondItem="cpQ-A4-ink" secondAttribute="top" id="xC7-7G-gDf"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QWP-mP-FhF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
