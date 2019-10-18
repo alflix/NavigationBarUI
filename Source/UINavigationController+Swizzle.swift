@@ -26,7 +26,7 @@ public extension UINavigationController {
             swizzling(
                 UINavigationController.self,
                 #selector(UINavigationController.popToRootViewController(animated:)),
-                #selector(UINavigationController.popToRootViewController(animated:)))
+                #selector(UINavigationController.swizzle_popToRootViewControllerAnimated(_:)))
         }
     }
 
@@ -39,20 +39,30 @@ public extension UINavigationController {
         }
         let fromVC = coordinator.viewController(forKey: .from)
         let toVC = coordinator.viewController(forKey: .to)
-        updateNavigationBar(from: fromVC, to: toVC, progress: percentComplete)
+        toVC?.viewIsInteractiveTransition = true
+        updateNavigationBar(from: fromVC, to: toVC, progress: percentComplete, setupShowLine: percentComplete > 0.5)
         swizzle_updateInteractiveTransition(percentComplete)
     }
 
     @objc private func swizzle_pushViewController(_ viewController: UIViewController, animated: Bool) {
         let block: ViewWillAppearBlock = { [weak self] (viewController, animated) in
             guard let strongSelf = self else { return }
-            strongSelf.setNavigationBarHidden(viewController.navigationAppearance.isNavigationBarHidden, animated: animated)
-
-            strongSelf.navigationBar.barTintColor = viewController.navigationAppearance.barTintColor
-            strongSelf.navigationBar.tintColor = viewController.navigationAppearance.tintColor
-            strongSelf.navigationBar.setTitle(color: viewController.navigationAppearance.titleColor, font: viewController.navigationAppearance.titleFont)
-            strongSelf.navigationBar.setBackground(alpha: viewController.navigationAppearance.backgroundAlpha)
-            strongSelf.navigationBar.setupShadowLine(remove: !viewController.navigationAppearance.showShadowLine)
+            // 由于 iOS 13 不响应 UINavigationBarDelegate
+            if #available(iOS 13, *) {
+                delay(0.1) {
+                    if viewController.viewIsInteractiveTransition {
+                        viewController.viewIsInteractiveTransition = false
+                        return
+                    }
+                    strongSelf.navigationBar.setup(navigationAppearance: viewController.navigationAppearance)
+                }
+                if let topVC = self?.topViewController, let coordinator = topVC.transitionCoordinator,
+                    coordinator.initiallyInteractive {
+                    coordinator.notifyWhenInteractionChanges({ (context) in
+                        self?.dealInteractionChanges(context)
+                    })
+                }
+            }
         }
         viewController.viewWillAppearHandler = block
         if let disappearingViewController = viewControllers.last, disappearingViewController.viewWillAppearHandler == nil {
@@ -133,10 +143,13 @@ extension UINavigationController {
         let progress = AnimationProperties.progress
         let fromVC = coordinator.viewController(forKey: .from)
         let toVC = coordinator.viewController(forKey: .to)
-        updateNavigationBar(from: fromVC, to: toVC, progress: progress)
+        updateNavigationBar(from: fromVC, to: toVC, progress: progress, setupShowLine: true)
     }
 
-    private func updateNavigationBar(from fromVC: UIViewController?, to toVC: UIViewController?, progress: CGFloat) {
+    private func updateNavigationBar(from fromVC: UIViewController?,
+                                     to toVC: UIViewController?,
+                                     progress: CGFloat,
+                                     setupShowLine: Bool = false) {
         guard let fromVC = fromVC, let toVC = toVC else { return }
         // change barTintColor
         let fromColor = fromVC.navigationAppearance.barTintColor
@@ -164,10 +177,13 @@ extension UINavigationController {
         let fromAlpha = fromVC.navigationAppearance.backgroundAlpha
         let toAlpha = toVC.navigationAppearance.backgroundAlpha
         let newAlpha = fromAlpha + (toAlpha - fromAlpha) * progress
+        // 注意 iOS 13，newAlpha 在 swizzle_updateInteractiveTransition 无效
         navigationBar.setBackground(alpha: newAlpha)
 
-        // update shadow line        
-        navigationBar.setupShadowLine(remove: !toVC.navigationAppearance.showShadowLine)
+        // update shadow line
+        if setupShowLine {
+            navigationBar.setupShadowLine(remove: !toVC.navigationAppearance.showShadowLine)
+        }
     }
 
     /// 处理手势进行到一半又停止的情况
@@ -205,19 +221,13 @@ extension UINavigationController {
 }
 
 extension UINavigationController: UINavigationBarDelegate {
-    // MARK: 如果 topVC setNavigationBarHidden(true), UINavigationBar 不显示，该方法不会触发
+    // MARK: 如果 topVC setNavigationBarHidden(true), UINavigationBar 不显示，该方法不会触发. iOS 13，无论如何不会触发
     public func navigationBar(_ navigationBar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
         // MARK：通过手势返回
         if let topVC = topViewController, let coordinator = topVC.transitionCoordinator, coordinator.initiallyInteractive {
-            if #available(iOS 10.0, *) {
-                coordinator.notifyWhenInteractionChanges({ (context) in
-                    self.dealInteractionChanges(context)
-                })
-            } else {
-                coordinator.notifyWhenInteractionEnds({ (context) in
-                    self.dealInteractionChanges(context)
-                })
-            }
+            coordinator.notifyWhenInteractionChanges({ (context) in
+                self.dealInteractionChanges(context)
+            })
             return true
         }
         // MARK: == nil

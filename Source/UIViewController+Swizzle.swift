@@ -26,6 +26,7 @@ public extension UIViewController {
 
     fileprivate struct AssociatedKey {
         static var viewWillAppearHandlerWrapper: String = "com.ganguo.viewWillAppear"
+        static var viewIsInteractiveTransition: String = "com.ganguo.viewIsInteractiveTransition"
     }
 
     var viewWillAppearHandler: ViewWillAppearBlock? {
@@ -37,6 +38,18 @@ public extension UIViewController {
         }
         set {
             associate(copyObject: newValue, forKey: &AssociatedKey.viewWillAppearHandlerWrapper)
+        }
+    }
+
+    var viewIsInteractiveTransition: Bool {
+        get {
+            if let boolen = associatedObject(forKey: &AssociatedKey.viewIsInteractiveTransition) as? Bool {
+                return boolen
+            }
+            return false
+        }
+        set {
+            associate(copyObject: newValue, forKey: &AssociatedKey.viewIsInteractiveTransition)
         }
     }
 
@@ -56,3 +69,4 @@ public extension UIViewController {
         childController.viewWillAppearHandler = block
     }
 }
+

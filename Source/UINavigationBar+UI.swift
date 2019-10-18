@@ -17,7 +17,7 @@ public extension UINavigationBar {
         setupShadowLine(remove: !navigationAppearance.showShadowLine)
     }
 
-    /// 改变背景 alpha http://developer.limneos.net/?ios=11.1.2&framework=InCallService.framework&header=PHAudioCallViewController.h
+    /// 改变背景 alpha
     var barBackgroundView: UIView? {
         return self.subviews
             .filter { NSStringFromClass(type(of: $0)) == "_UIBarBackground" }
@@ -25,15 +25,21 @@ public extension UINavigationBar {
     }
 
     func setBackground(alpha: CGFloat) {
-        if #available(iOS 13, *), alpha > 0.1 {
-            standardAppearance.backgroundColor = barTintColor?.withAlphaComponent(alpha)
+        print("😄 alpha: \(alpha)")
+        if #available(iOS 13, *) {
+            if alpha == 0 {
+                standardAppearance.configureWithTransparentBackground()
+            } else if alpha == 1 {
+                standardAppearance.configureWithOpaqueBackground()
+            } else {
+                standardAppearance.backgroundColor = barTintColor?.withAlphaComponent(alpha)
+            }
             return
         }
-        guard let barBackgroundView = barBackgroundView else { return }
-        let valueForKey = barBackgroundView.value(forKey:)
+        guard barBackgroundView != nil else { return }
         /// MARK: 尝试过很多方法，isTranslucent == false 无论怎么改都没有效果
         guard isTranslucent else { return }
-        if let backgroundEffectView = recursiveFindSubview(of: "UIVisualEffectView") as? UIView,
+        if let backgroundEffectView = recursiveFindSubview(of: "UIVisualEffectView"),
             backgroundImage(for: .default) == nil {
             backgroundEffectView.alpha = alpha
             return
@@ -84,7 +90,6 @@ public extension UINavigationBar {
         if view is UIImageView && view.bounds.size.height <= 1 {
             return (view as! UIImageView)
         }
-
         for subview in view.subviews {
             if let imageView = findShadowImage(under: subview) {
                 return imageView
