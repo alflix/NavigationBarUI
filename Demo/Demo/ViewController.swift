@@ -12,6 +12,7 @@ import Reusable
 class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+
         view.backgroundColor = .blue
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "1"), style: .plain, target: self, action: #selector(push))
     }

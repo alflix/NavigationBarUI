@@ -47,6 +47,7 @@ public extension UINavigationController {
     @objc private func swizzle_pushViewController(_ viewController: UIViewController, animated: Bool) {
         let block: ViewWillAppearBlock = { [weak self] (viewController, animated) in
             guard let strongSelf = self else { return }
+            strongSelf.setNavigationBarHidden(viewController.navigationAppearance.isNavigationBarHidden, animated: animated)
             // 由于 iOS 13 不响应 UINavigationBarDelegate
             if #available(iOS 13, *) {
                 delay(0.1) {
