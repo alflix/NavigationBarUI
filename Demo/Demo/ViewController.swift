@@ -12,12 +12,9 @@ import Reusable
 class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .blue
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "1"), style: .plain, target: self, action: #selector(push))
     }
 
-    @objc func push() {
-        navigationController?.pushViewController(SecondViewController.instantiate(), animated: true)
+    @IBAction func sliderValueChange(_ sender: UISlider) {
+        navigationAppearance.backgroundAlpha = CGFloat(sender.value)
     }
 }
