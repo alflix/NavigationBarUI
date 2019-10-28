@@ -14,7 +14,11 @@ public extension UINavigationBar {
         tintColor = navigationAppearance.tintColor
         setTitle(color: navigationAppearance.titleColor, font: navigationAppearance.titleFont)
         setBackground(alpha: navigationAppearance.backgroundAlpha)
-        setupShadowLine(remove: !navigationAppearance.showShadowLine)
+        if navigationAppearance.backgroundAlpha > 0 {
+            setupShadowLine(remove: !navigationAppearance.showShadowLine)
+        } else {
+            setupShadowLine(remove: true)
+        }
     }
 
     /// 改变背景 alpha

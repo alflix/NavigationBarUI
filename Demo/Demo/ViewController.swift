@@ -36,10 +36,6 @@ class ViewController: UIViewController {
         navigationAppearance.showShadowLine = !sender.isOn
     }
 
-    @IBAction func barHiddenValueChange(_ sender: UISwitch) {
-        navigationAppearance.isNavigationBarHidden = sender.isOn
-    }
-
     @IBAction func blackBarStyleValueChange(_ sender: UISwitch) {
 
     }

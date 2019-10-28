@@ -29,7 +29,7 @@ public extension UINavigationController {
                 #selector(UINavigationController.swizzle_popToRootViewControllerAnimated(_:)))
         }
     }
-
+    
     @objc private func swizzle_updateInteractiveTransition(_ percentComplete: CGFloat) {
         guard let topVC = topViewController,
             let coordinator = topVC.transitionCoordinator,
@@ -43,7 +43,7 @@ public extension UINavigationController {
         updateNavigationBar(from: fromVC, to: toVC, progress: percentComplete, setupShowLine: percentComplete > 0.5)
         swizzle_updateInteractiveTransition(percentComplete)
     }
-
+    
     @objc private func swizzle_pushViewController(_ viewController: UIViewController, animated: Bool) {
         let block: ViewWillAppearBlock = { [weak self] (viewController, animated) in
             guard let strongSelf = self else { return }
@@ -73,13 +73,13 @@ public extension UINavigationController {
             swizzle_pushViewController(viewController, animated: animated)
         }
     }
-
+    
     @objc private func swizzle_popToViewController(_ viewController: UIViewController, animated: Bool) -> [UIViewController]? {
         return popsTransaction {
             swizzle_popToViewController(viewController, animated: animated)
         }
     }
-
+    
     @objc private func swizzle_popViewController(animated: Bool) -> UIViewController? {
         let poppedViewController = swizzle_popViewController(animated: animated)
         if viewControllers.count > 0 {
@@ -88,13 +88,13 @@ public extension UINavigationController {
         }
         return poppedViewController
     }
-
+    
     @objc private func swizzle_popToRootViewControllerAnimated(_ animated: Bool) -> [UIViewController]? {
         return popsTransaction {
             swizzle_popToRootViewControllerAnimated(animated)
         }
     }
-
+    
     @objc private func pushTransaction(block: () -> Void) {
         var displayLink: CADisplayLink? = CADisplayLink(target: self, selector: #selector(animationDisplay))
         // UITrackingRunLoopMode: 界面跟踪 Mode，用于 ScrollView 追踪触摸滑动，保证界面滑动时不受其他 Mode 影响
@@ -109,7 +109,7 @@ public extension UINavigationController {
         block()
         CATransaction.commit()
     }
-
+    
     @objc private func popsTransaction(block: () -> [UIViewController]?) -> [UIViewController]? {
         var displayLink: CADisplayLink? = CADisplayLink(target: self, selector: #selector(animationDisplay))
         displayLink?.add(to: .main, forMode: .common)
@@ -124,7 +124,7 @@ public extension UINavigationController {
         CATransaction.commit()
         return viewControllers
     }
-
+    
     private struct AnimationProperties {
         static let duration = 0.13
         static var displayCount = 0
@@ -146,24 +146,24 @@ extension UINavigationController {
         let toVC = coordinator.viewController(forKey: .to)
         updateNavigationBar(from: fromVC, to: toVC, progress: progress, setupShowLine: true)
     }
-
+    
     private func updateNavigationBar(from fromVC: UIViewController?,
                                      to toVC: UIViewController?,
                                      progress: CGFloat,
                                      setupShowLine: Bool = false) {
         guard let fromVC = fromVC, let toVC = toVC else { return }
-        // change barTintColor
-        let fromColor = fromVC.navigationAppearance.barTintColor
-        let toColor = toVC.navigationAppearance.barTintColor
-        let newColor = UIColor.averageColor(from: fromColor, to: toColor, percent: progress)
-        navigationBar.barTintColor = newColor
-
+        
+        // change barTintColor：该逻辑在 updateInteractiveTransition 无法实现，
+        //        if let fromColor = fromVC.navigationAppearance.barTintColor, let toColor = toVC.navigationAppearance.barTintColor {
+        //            let newColor = UIColor.averageColor(from: fromColor, to: toColor, percent: progress)
+        //            navigationBar.barTintColor = newColor
+        //        }
         // change tintColor
         let fromTintColor = fromVC.navigationAppearance.tintColor
         let toTintColor = toVC.navigationAppearance.tintColor
         let newTintColor = UIColor.averageColor(from: fromTintColor, to: toTintColor, percent: progress)
         navigationBar.tintColor = newTintColor
-
+        
         // change titleColor, titleFont
         let fromTitleColor = fromVC.navigationAppearance.titleColor
         let toTitleColor = toVC.navigationAppearance.titleColor
@@ -173,20 +173,22 @@ extension UINavigationController {
         let newFontSize = fromTitleFont.pointSize + (toTitleFont.pointSize - fromTitleFont.pointSize) * progress
         let newFont = UIFont.systemFont(ofSize: newFontSize, weight: toVC.navigationAppearance.titleFont.fontWeight)
         navigationBar.setTitle(color: newTitleColor, font: newFont)
-
+        
         // change alpha
         let fromAlpha = fromVC.navigationAppearance.backgroundAlpha
         let toAlpha = toVC.navigationAppearance.backgroundAlpha
         let newAlpha = fromAlpha + (toAlpha - fromAlpha) * progress
         // 注意 iOS 13，newAlpha 在 swizzle_updateInteractiveTransition 无效
         navigationBar.setBackground(alpha: newAlpha)
-
+        
         // update shadow line
-        if setupShowLine {
+        if newAlpha > 0, setupShowLine {
             navigationBar.setupShadowLine(remove: !toVC.navigationAppearance.showShadowLine)
+        } else {
+            self.navigationBar.setupShadowLine(remove: true)
         }
     }
-
+    
     /// 处理手势进行到一半又停止的情况
     private func dealInteractionChanges(_ context: UIViewControllerTransitionCoordinatorContext) {
         let animations: (UITransitionContextViewControllerKey) -> Void = {
@@ -197,14 +199,18 @@ extension UINavigationController {
             let curTitleColor = viewController.navigationAppearance.titleColor
             let curTitleFont = viewController.navigationAppearance.titleFont
             let showShadowLine = viewController.navigationAppearance.showShadowLine
-
+            
             self.navigationBar.barTintColor = curBarTintColor
             self.navigationBar.tintColor = curTintColor
             self.navigationBar.setTitle(color: curTitleColor, font: curTitleFont)
             self.navigationBar.setBackground(alpha: curAlpha)
-            self.navigationBar.setupShadowLine(remove: !showShadowLine)
+            if curAlpha > 0 {
+                self.navigationBar.setupShadowLine(remove: !showShadowLine)
+            } else {
+                self.navigationBar.setupShadowLine(remove: true)
+            }
         }
-
+        
         // 完成返回手势的取消事件
         if context.isCancelled {
             let cancelDuration: TimeInterval = context.transitionDuration * Double(context.percentComplete)
