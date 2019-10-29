@@ -14,7 +14,7 @@ public extension UINavigationBar {
         if appearance.backgroundAlpha > 0 {
             setupShadowLineStatus(isShow: appearance.isShowShadowLine, color: appearance.shadowColor)
         } else {
-            setupShadowLineStatus(isShow: true, color: appearance.shadowColor)
+            setupShadowLineStatus(isShow: false, color: appearance.shadowColor)
         }
         setupBarTintColor(appearance.barTintColor)
         setupBackgroundAlpha(appearance.backgroundAlpha)
