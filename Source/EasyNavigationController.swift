@@ -1,5 +1,5 @@
 //
-//  GGNavigationController.swift
+//  EasyNavigationController.swift
 //  EasyNavigationBar
 //
 //  Created by John on 2018/10/13.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class GGNavigationController: UINavigationController {
+open class EasyNavigationController: UINavigationController {
     //是否允许手势返回（对于一些特殊的页面，需要禁止掉手势返回）
     public var enabledPop: Bool = true
 
@@ -23,10 +23,7 @@ open class GGNavigationController: UINavigationController {
     override open func pushViewController(_ viewController: UIViewController, animated: Bool) {
         if viewControllers.count > 0 && (viewController.navigationItem.leftBarButtonItem == nil) {
             viewController.hidesBottomBarWhenPushed = true
-            if let image = NavigationBarConfig.backIconImage {
-                let backBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(backAction))
-                viewController.navigationItem.leftBarButtonItem = backBarButtonItem
-            }
+            viewController.setupBackImage(NavigationBarConfig.backIconImage)
         }
         interactivePopGestureRecognizer?.isEnabled = false
         super.pushViewController(viewController, animated: animated)
@@ -34,21 +31,27 @@ open class GGNavigationController: UINavigationController {
 }
 
 // MARK: - Function
-private extension GGNavigationController {
-    @objc func backAction() {
-        popViewController(animated: true)
+public extension UIViewController {
+    func setupBackImage(_ image: UIImage?) {
+        guard let image = image else { return }
+        let backBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(backAction))
+        navigationItem.leftBarButtonItem = backBarButtonItem
+    }
+
+    @objc private func backAction() {
+        navigationController?.popViewController(animated: true)
     }
 }
 
 // MARK: - UINavigationControllerDelegate
-extension GGNavigationController: UINavigationControllerDelegate {
+extension EasyNavigationController: UINavigationControllerDelegate {
     public func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         interactivePopGestureRecognizer?.isEnabled = navigationController.viewControllers.count > 1 ? enabledPop : false
     }
 }
 
 // MARK: - UIGestureRecognizerDelegate
-extension GGNavigationController: UIGestureRecognizerDelegate {
+extension EasyNavigationController: UIGestureRecognizerDelegate {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive press: UIPress) -> Bool {
         return enabledPop
     }
