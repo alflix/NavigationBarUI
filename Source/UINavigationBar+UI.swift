@@ -10,7 +10,7 @@ import UIKit
 
 public extension UINavigationBar {
     func setup(navigationAppearance: NavigationAppearance) {
-        barTintColor = navigationAppearance.barTintColor
+        setupBarTintColor(navigationAppearance.barTintColor)
         tintColor = navigationAppearance.tintColor
         setTitle(color: navigationAppearance.titleColor, font: navigationAppearance.titleFont)
         setBackground(alpha: navigationAppearance.backgroundAlpha)
@@ -33,8 +33,6 @@ public extension UINavigationBar {
         if #available(iOS 13, *) {
             if alpha == 0 {
                 standardAppearance.configureWithTransparentBackground()
-            } else if alpha == 1 {
-                standardAppearance.configureWithOpaqueBackground()
             } else {
                 standardAppearance.backgroundColor = barTintColor?.withAlphaComponent(alpha)
             }
@@ -47,6 +45,15 @@ public extension UINavigationBar {
             backgroundImage(for: .default) == nil {
             backgroundEffectView.alpha = alpha
             return
+        }
+    }
+
+    func setupBarTintColor(_ color: UIColor?) {
+        if #available(iOS 13, *) {
+            barTintColor = color
+            standardAppearance.backgroundColor = color
+        } else {
+            barTintColor = color
         }
     }
 
