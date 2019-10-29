@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		522FE9C82368269D00A8BB4A /* UIKitExtendsion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522FE9C72368269D00A8BB4A /* UIKitExtendsion.swift */; };
+		522FE9CA236827B900A8BB4A /* FoundationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522FE9C9236827B900A8BB4A /* FoundationExtension.swift */; };
+		522FE9CC236828ED00A8BB4A /* NavigationAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522FE9CB236828ED00A8BB4A /* NavigationAppearance.swift */; };
 		5231174A224220BB009DA11E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52311749224220BB009DA11E /* AppDelegate.swift */; };
 		5231174C224220BB009DA11E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5231174B224220BB009DA11E /* ViewController.swift */; };
 		5231174F224220BB009DA11E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5231174D224220BB009DA11E /* Main.storyboard */; };
@@ -22,6 +25,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		522FE9C72368269D00A8BB4A /* UIKitExtendsion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitExtendsion.swift; sourceTree = "<group>"; };
+		522FE9C9236827B900A8BB4A /* FoundationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationExtension.swift; sourceTree = "<group>"; };
+		522FE9CB236828ED00A8BB4A /* NavigationAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationAppearance.swift; sourceTree = "<group>"; };
 		52311746224220BB009DA11E /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52311749224220BB009DA11E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5231174B224220BB009DA11E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -102,6 +108,9 @@
 				52754C0C235861C7006ADF6A /* UIViewController+Navigation.swift */,
 				52754C0D235861C7006ADF6A /* UINavigationController+Swizzle.swift */,
 				52754C0E235861C7006ADF6A /* GGNavigationController.swift */,
+				522FE9CB236828ED00A8BB4A /* NavigationAppearance.swift */,
+				522FE9C72368269D00A8BB4A /* UIKitExtendsion.swift */,
+				522FE9C9236827B900A8BB4A /* FoundationExtension.swift */,
 			);
 			name = Source;
 			path = ../../Source;
@@ -253,10 +262,13 @@
 				52754C13235861C7006ADF6A /* GGNavigationController.swift in Sources */,
 				52754C12235861C7006ADF6A /* UINavigationController+Swizzle.swift in Sources */,
 				5231174C224220BB009DA11E /* ViewController.swift in Sources */,
+				522FE9C82368269D00A8BB4A /* UIKitExtendsion.swift in Sources */,
 				52754C11235861C7006ADF6A /* UIViewController+Navigation.swift in Sources */,
 				52754C10235861C7006ADF6A /* UIViewController+Swizzle.swift in Sources */,
 				5231174A224220BB009DA11E /* AppDelegate.swift in Sources */,
+				522FE9CA236827B900A8BB4A /* FoundationExtension.swift in Sources */,
 				52754C0F235861C7006ADF6A /* UINavigationBar+UI.swift in Sources */,
+				522FE9CC236828ED00A8BB4A /* NavigationAppearance.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

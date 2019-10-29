@@ -1,6 +1,6 @@
 //
 //  UIViewController+Swizzle.swift
-//  GGUI
+//  EasyNavigationBar
 //
 //  Created by John on 2019/8/16.
 //  Copyright © 2019年 Ganguo. All rights reserved.

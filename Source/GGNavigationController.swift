@@ -1,6 +1,6 @@
 //
 //  GGNavigationController.swift
-//  GGUI
+//  EasyNavigationBar
 //
 //  Created by John on 2018/10/13.
 //  Copyright © 2018年 Ganguo. All rights reserved.
@@ -23,7 +23,7 @@ open class GGNavigationController: UINavigationController {
     override open func pushViewController(_ viewController: UIViewController, animated: Bool) {
         if viewControllers.count > 0 && (viewController.navigationItem.leftBarButtonItem == nil) {
             viewController.hidesBottomBarWhenPushed = true
-            if let image = GGUI.NavigationBarConfig.backIconImage {
+            if let image = NavigationBarConfig.backIconImage {
                 let backBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(backAction))
                 viewController.navigationItem.leftBarButtonItem = backBarButtonItem
             }

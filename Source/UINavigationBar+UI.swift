@@ -1,35 +1,41 @@
 //
 //  UINavigationBar+UI.swift
-//  GGUI
+//  EasyNavigationBar
 //
 //  Created by John on 2019/3/11.
-//  Copyright © 2019 Ganguo. All rights reserved.
+//  Copyright © 2019 John. All rights reserved.
 //
 
 import UIKit
 
 public extension UINavigationBar {
-    func setup(navigationAppearance: NavigationAppearance) {
-        setupBarTintColor(navigationAppearance.barTintColor)
-        tintColor = navigationAppearance.tintColor
-        setTitle(color: navigationAppearance.titleColor, font: navigationAppearance.titleFont)
-        setBackground(alpha: navigationAppearance.backgroundAlpha)
-        if navigationAppearance.backgroundAlpha > 0 {
-            setupShadowLine(remove: !navigationAppearance.showShadowLine)
+    func setupAppearance(_ appearance: NavigationAppearance) {
+        if appearance.isNavigationBarHidden { return }
+        if appearance.backgroundAlpha > 0 {
+            setupShadowLineStatus(isShow: appearance.isShowShadowLine, color: appearance.shadowColor)
         } else {
-            setupShadowLine(remove: true)
+            setupShadowLineStatus(isShow: true, color: appearance.shadowColor)
         }
+        setupBarTintColor(appearance.barTintColor)
+        setupBackgroundAlpha(appearance.backgroundAlpha)
+        setupTitleTextAttributes(appearance.titleTextAttributes)
+        tintColor = appearance.tintColor
     }
 
-    /// 改变背景 alpha
-    var barBackgroundView: UIView? {
-        return self.subviews
-            .filter { NSStringFromClass(type(of: $0)) == "_UIBarBackground" }
-            .first
+    func updateAppearance(from appearance: NavigationAppearance, to toAppearance: NavigationAppearance, progress: CGFloat) {
+        // todo: barTintColor, 下面的逻辑在 updateInteractiveTransition 无法实现，需要找其他方案
+        // todo: titleTextAttributes
+        let tintColor = UIColor.averageColor(from: appearance.tintColor, to: toAppearance.tintColor, percent: progress)
+        let alpha = appearance.backgroundAlpha + (toAppearance.backgroundAlpha - appearance.backgroundAlpha) * progress
+
+        var toAppearance = toAppearance
+        toAppearance.tintColor = tintColor
+        toAppearance.backgroundAlpha = alpha
+        setupAppearance(toAppearance)
     }
 
-    func setBackground(alpha: CGFloat) {
-        print("😄 alpha: \(alpha)")
+    func setupBackgroundAlpha(_ alpha: CGFloat) {
+        DPrint("change alpha: \(alpha)")
         if #available(iOS 13, *) {
             if alpha == 0 {
                 standardAppearance.configureWithTransparentBackground()
@@ -49,6 +55,7 @@ public extension UINavigationBar {
     }
 
     func setupBarTintColor(_ color: UIColor?) {
+        DPrint("change barTintColor: \(String(describing: color))")
         if #available(iOS 13, *) {
             barTintColor = color
             standardAppearance.backgroundColor = color
@@ -57,41 +64,41 @@ public extension UINavigationBar {
         }
     }
 
-    /// 设置标题颜色，字体
-    ///
-    /// - Parameters:
-    ///   - color: 颜色
-    ///   - font: 字体
-    func setTitle(color: UIColor, font: UIFont) {
-        titleTextAttributes = [.font: font, .foregroundColor: color]
+    func setupTitleTextAttributes(_ titleTextAttributes: [NSAttributedString.Key: Any]?) {
+        if #available(iOS 13, *) {
+            if let titleTextAttributes = titleTextAttributes {
+                standardAppearance.titleTextAttributes = titleTextAttributes
+            }
+        } else {
+            self.titleTextAttributes = titleTextAttributes
+        }
     }
 
-    /// 设置分割线
-    /// - Parameter remove: 是否移除
-    func setupShadowLine(remove: Bool) {
-        if remove {
+    func setupShadowLineStatus(isShow: Bool, color: UIColor) {
+        if isShow {
+            if #available(iOS 13, *) {
+                standardAppearance.shadowColor = color
+            } else {
+                if #available(iOS 11, *) {
+                    if let shadow = findShadowImage(under: self) {
+                        shadow.isHidden = false
+                    }
+                } else {
+                    shadowImage = UIImage(color: color, size: CGSize(width: 1, height: 0.5))
+                }
+            }
+
+        } else {
             if #available(iOS 13, *) {
                 standardAppearance.shadowColor = .clear
             } else {
                 /// ios10 直接 shadowImage = UIImage() 无用
-                if SYSTEM_VERSION_LESS_THAN(version: "11") {
+                if #available(iOS 11, *) {
                     if let shadow = findShadowImage(under: self) {
                         shadow.isHidden = true
                     }
                 } else {
                     shadowImage = UIImage()
-                }
-            }
-        } else {
-            if #available(iOS 13, *) {
-                standardAppearance.shadowColor = GGUI.LineView.color
-            } else {
-                if SYSTEM_VERSION_LESS_THAN(version: "11") {
-                    if let shadow = findShadowImage(under: self) {
-                        shadow.isHidden = false
-                    }
-                } else {
-                    shadowImage = UIImage(color: GGUI.LineView.color, size: CGSize(width: 1, height: 0.5))
                 }
             }
         }
@@ -107,5 +114,12 @@ public extension UINavigationBar {
             }
         }
         return nil
+    }
+
+    /// 改变背景 alpha
+    private var barBackgroundView: UIView? {
+        return self.subviews
+            .filter { NSStringFromClass(type(of: $0)) == "_UIBarBackground" }
+            .first
     }
 }
