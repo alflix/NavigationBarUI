@@ -46,8 +46,8 @@ public extension UINavigationController {
 
     @objc private func swizzle_pushViewController(_ viewController: UIViewController, animated: Bool) {
         let block: ViewWillAppearBlock = { [weak self] (viewController, animated) in
-            guard let strongSelf = self else { return }
-            strongSelf.setNavigationBarHidden(viewController.navigationAppearance.isNavigationBarHidden, animated: animated)
+            guard let self = self else { return }
+            self.setNavigationBarHidden(viewController.navigationAppearance.isNavigationBarHidden, animated: animated)
             // 由于 iOS 13 不响应 UINavigationBarDelegate
             if #available(iOS 13, *) {
                 DispatchQueue.delay(0.1) {
@@ -55,12 +55,12 @@ public extension UINavigationController {
                         viewController.viewIsInteractiveTransition = false
                         return
                     }
-                    strongSelf.navigationBar.setupAppearance(viewController.navigationAppearance)
+                    self.navigationAppearance = viewController.navigationAppearance
                 }
-                if let topVC = self?.topViewController, let coordinator = topVC.transitionCoordinator,
+                if let topVC = self.topViewController, let coordinator = topVC.transitionCoordinator,
                     coordinator.initiallyInteractive {
                     coordinator.notifyWhenInteractionChanges({ (context) in
-                        self?.dealInteractionChanges(context)
+                        self.dealInteractionChanges(context)
                     })
                 }
             }
@@ -159,7 +159,7 @@ extension UINavigationController {
     private func dealInteractionChanges(_ context: UIViewControllerTransitionCoordinatorContext) {
         let animations: (UITransitionContextViewControllerKey) -> Void = {
             guard let viewController = context.viewController(forKey: $0) else { return }
-            self.navigationBar.setupAppearance(viewController.navigationAppearance)
+            self.navigationAppearance = viewController.navigationAppearance
         }
 
         // 完成返回手势的取消事件

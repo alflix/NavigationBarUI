@@ -27,9 +27,9 @@ extension UIViewController {
                 return
             }
             if let viewController = self as? UINavigationController {
-                viewController.navigationBar.setupAppearance(newValue)
+                viewController.setupBarAppearance(newValue)
             } else if let navigationController = navigationController {
-                navigationController.navigationBar.setupAppearance(newValue)
+                navigationController.setupBarAppearance(newValue)
             }
             if !(navigationController?.navigationBar.isTranslucent ?? true) && newValue.backgroundAlpha <= 1 {
                 DPrint("⚠️ warning: backgroundAlpha would not available when isTranslucent is false")

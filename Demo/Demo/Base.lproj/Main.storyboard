@@ -276,7 +276,7 @@
         <scene sceneID="JZj-SF-gK2">
             <objects>
                 <navigationController id="AGO-UE-EH6" customClass="EasyNavigationController" customModule="Demo" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="C2d-dG-D5F">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="C2d-dG-D5F" customClass="EasyNavigationBar" customModule="Demo" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

@@ -28,6 +28,24 @@ open class EasyNavigationController: UINavigationController {
         interactivePopGestureRecognizer?.isEnabled = false
         super.pushViewController(viewController, animated: animated)
     }
+
+    public override init(rootViewController: UIViewController) {
+        super.init(navigationBarClass: EasyNavigationBar.self, toolbarClass: nil)
+    }
+
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+}
+
+public extension UINavigationController {
+    func setupBarAppearance(_ appearance: NavigationAppearance) {
+        if let navigationBar = navigationBar as? EasyNavigationBar {
+            navigationBar.setupAppearance(appearance)
+        } else {
+            navigationBar.setupAppearance(appearance)
+        }
+    }
 }
 
 // MARK: - Function

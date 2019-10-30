@@ -63,8 +63,8 @@ public extension UIViewController {
     @objc private func swizzle_addChild(_ childController: UIViewController) {
         swizzle_addChild(childController)
         let block: ViewWillAppearBlock = { [weak self] (viewController, animated) in
-            guard let strongSelf = self, let parent = viewController.parent else { return }
-            strongSelf.navigationController?.setNavigationBarHidden(parent.navigationAppearance.isNavigationBarHidden, animated: animated)
+            guard let self = self, let parent = viewController.parent else { return }
+            self.navigationController?.setNavigationBarHidden(parent.navigationAppearance.isNavigationBarHidden, animated: animated)
         }
         childController.viewWillAppearHandler = block
     }
