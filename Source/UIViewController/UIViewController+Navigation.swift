@@ -19,7 +19,7 @@ extension UIViewController {
             if let value = associatedObject(forKey: &AssociatedKey.appearanceKey) as? NavigationAppearance {
                 return value
             }
-            return NavigationBarConfig.appearance
+            return Config.appearance
         }
         set {
             if newValue.isNavigationBarHidden {
@@ -27,9 +27,9 @@ extension UIViewController {
                 return
             }
             if let viewController = self as? UINavigationController {
-                viewController.setupBarAppearance(newValue)
+                viewController.navigationBar.setupAppearance(newValue)
             } else if let navigationController = navigationController {
-                navigationController.setupBarAppearance(newValue)
+                navigationController.navigationBar.setupAppearance(newValue)
             }
             if !(navigationController?.navigationBar.isTranslucent ?? true) && newValue.backgroundAlpha <= 1 {
                 DPrint("⚠️ warning: backgroundAlpha would not available when isTranslucent is false")

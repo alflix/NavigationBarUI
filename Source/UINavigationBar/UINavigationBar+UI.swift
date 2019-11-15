@@ -19,6 +19,7 @@ public extension UINavigationBar {
         setupBarTintColor(appearance.barTintColor)
         setupBackgroundAlpha(appearance.backgroundAlpha)
         setupTitleTextAttributes(appearance.titleTextAttributes)
+        setupBarButtonItemTitleTextAttributes(appearance.barButtonItemTitleTextAttributes)
         tintColor = appearance.tintColor
     }
 
@@ -71,6 +72,24 @@ public extension UINavigationBar {
             }
         } else {
             self.titleTextAttributes = titleTextAttributes
+        }
+    }
+
+    func setupBarButtonItemTitleTextAttributes(_ titleTextAttributes: BarButtonItemTitleTextAttributes) {
+        if #available(iOS 13, *) {
+            if let normal = titleTextAttributes.normal {
+                standardAppearance.buttonAppearance.normal.titleTextAttributes = normal
+            }
+            if let highlighted = titleTextAttributes.highlighted {
+                standardAppearance.buttonAppearance.highlighted.titleTextAttributes = highlighted
+            }
+            if let disabled = titleTextAttributes.disabled {
+                standardAppearance.buttonAppearance.disabled.titleTextAttributes = disabled
+            }
+        } else {
+            UIBarButtonItem.appearance().setTitleTextAttributes(titleTextAttributes.normal, for: .normal)
+            UIBarButtonItem.appearance().setTitleTextAttributes(titleTextAttributes.highlighted, for: .highlighted)
+            UIBarButtonItem.appearance().setTitleTextAttributes(titleTextAttributes.disabled, for: .disabled)
         }
     }
 

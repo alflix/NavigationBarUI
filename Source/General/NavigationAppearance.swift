@@ -8,8 +8,8 @@
 
 import UIKit
 
-public struct NavigationBarConfig {
-    /// 返回按钮的图标
+public struct Config {
+    /// 是否启用调试模式，true 的话会有 log
     public static var debugMode: Bool = false
     /// 返回按钮的图标
     public static var backIconImage: UIImage?
@@ -32,6 +32,8 @@ public struct NavigationAppearance {
     public var tintColor: UIColor = .black
     /// 标题 TextAttributes
     public var titleTextAttributes: [NSAttributedString.Key: Any]? = UINavigationBar.appearance().titleTextAttributes
+    /// 左右控件的 TextAttributes
+    public var barButtonItemTitleTextAttributes: BarButtonItemTitleTextAttributes = BarButtonItemTitleTextAttributes()
 
     public init() {}
 
@@ -50,4 +52,10 @@ public struct NavigationAppearance {
         self.tintColor = tintColor
         self.titleTextAttributes = titleTextAttributes
     }
+}
+
+public struct BarButtonItemTitleTextAttributes {
+    public var normal: [NSAttributedString.Key: Any]?
+    public var highlighted: [NSAttributedString.Key: Any]?
+    public var disabled: [NSAttributedString.Key: Any]?
 }

@@ -8,9 +8,9 @@
 
 import Foundation
 
-public typealias DelayTask = (_ cancel: Bool) -> Void
+typealias DelayTask = (_ cancel: Bool) -> Void
 
-public extension DispatchQueue {
+extension DispatchQueue {
     private static var onceTracker = [String]()
 
     static func once(file: String = #file, function: String = #function, line: Int = #line, block: () -> Void) {
@@ -57,7 +57,7 @@ public extension DispatchQueue {
     }
 }
 
-public extension NSObject {
+extension NSObject {
     /// Sets an associated value for a given object using a weak reference to the associated object.
     /// **Note**: the `key` underlying type must be String.
     func associate(assignObject object: Any?, forKey key: UnsafeRawPointer) {
@@ -97,7 +97,7 @@ public extension NSObject {
 }
 
 /// 封装 swizzed 方法
-public let swizzling: (AnyClass, Selector, Selector) -> Void = { forClass, originalSelector, swizzledSelector in
+let swizzling: (AnyClass, Selector, Selector) -> Void = { forClass, originalSelector, swizzledSelector in
     guard
         let originalMethod = class_getInstanceMethod(forClass, originalSelector),
         let swizzledMethod = class_getInstanceMethod(forClass, swizzledSelector)
@@ -105,8 +105,8 @@ public let swizzling: (AnyClass, Selector, Selector) -> Void = { forClass, origi
     method_exchangeImplementations(originalMethod, swizzledMethod)
 }
 
-public func DPrint<N>(_ message: N, file: String = #file, function: String = #function, line: Int = #line) {
-    guard NavigationBarConfig.debugMode else {
+func DPrint<N>(_ message: N, file: String = #file, function: String = #function, line: Int = #line) {
+    guard Config.debugMode else {
         return
     }
     #if DEBUG

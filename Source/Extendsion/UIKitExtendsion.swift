@@ -8,7 +8,7 @@
 
 import UIKit
 
-public extension UIView {
+extension UIView {
     func recursiveFindSubview(of name: String) -> UIView? {
         for view in subviews {
             if view.isKind(of: NSClassFromString(name)!) {
@@ -24,7 +24,7 @@ public extension UIView {
     }
 }
 
-public extension UIImage {
+extension UIImage {
     convenience init(color: UIColor, size: CGSize) {
         UIGraphicsBeginImageContextWithOptions(size, false, 1)
 
@@ -48,7 +48,7 @@ public extension UIImage {
     }
 }
 
-public extension UIFont {
+extension UIFont {
     var fontWeight: UIFont.Weight {
         let fontAttributeKey = UIFontDescriptor.AttributeName.init(rawValue: "NSCTFontUIUsageAttribute")
         if let fontWeight = self.fontDescriptor.fontAttributes[fontAttributeKey] as? String {
@@ -79,7 +79,7 @@ public extension UIFont {
     }
 }
 
-public extension UIColor {
+extension UIColor {
     /// Calculate the middle Color with translation percent
     static func averageColor(from fromColor: UIColor, to toColor: UIColor, percent: CGFloat) -> UIColor {
         var fromRed: CGFloat = 0

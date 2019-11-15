@@ -23,28 +23,10 @@ open class EasyNavigationController: UINavigationController {
     override open func pushViewController(_ viewController: UIViewController, animated: Bool) {
         if viewControllers.count > 0 && (viewController.navigationItem.leftBarButtonItem == nil) {
             viewController.hidesBottomBarWhenPushed = true
-            viewController.setupBackImage(NavigationBarConfig.backIconImage)
+            viewController.setupBackImage(Config.backIconImage)
         }
         interactivePopGestureRecognizer?.isEnabled = false
         super.pushViewController(viewController, animated: animated)
-    }
-
-    public override init(rootViewController: UIViewController) {
-        super.init(navigationBarClass: EasyNavigationBar.self, toolbarClass: nil)
-    }
-
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-}
-
-public extension UINavigationController {
-    func setupBarAppearance(_ appearance: NavigationAppearance) {
-        if let navigationBar = navigationBar as? EasyNavigationBar {
-            navigationBar.setupAppearance(appearance)
-        } else {
-            navigationBar.setupAppearance(appearance)
-        }
     }
 }
 
@@ -52,11 +34,11 @@ public extension UINavigationController {
 public extension UIViewController {
     func setupBackImage(_ image: UIImage?) {
         guard let image = image else { return }
-        let backBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(backAction))
+        let backBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(easyBackAction))
         navigationItem.leftBarButtonItem = backBarButtonItem
     }
 
-    @objc private func backAction() {
+    @objc private func easyBackAction() {
         navigationController?.popViewController(animated: true)
     }
 }
