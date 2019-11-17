@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name                  = 'EasyNavigationBar'
   s.version               = '1.0.0'
-  s.summary               = 'use EasyNavigationBar easily!'
+  s.summary               = 'more powerful and elegant to use UINavigationController and UINavigationBar'
 
   s.homepage              = 'https://github.com/alflix/EasyNavigationBar'
   s.license               = { :type => 'Apache-2.0', :file => 'LICENSE' }
@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.module_name           = 'EasyNavigationBar'
   s.requires_arc          = true
 
-  s.swift_version         = '4.2'
+  s.swift_version         = '5.1'
   s.pod_target_xcconfig   = { 'SWIFT_VERSION' => '5.1' }
   s.static_framework      = true
   

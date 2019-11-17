@@ -28,21 +28,11 @@ platform :ios, '8.0'
 pod "EasyNavigationBar"
 ```
 
-> If you want to load http, Don't forget the Privacy Description in `info.plist`.
-
-```xml
-<key>NSAppTransportSecurity</key>
-<dict>
-    <key>NSAllowsArbitraryLoads</key>
-    <true/>
-</dict>
-```
-
 ## Usage 
 
 ## Author
 
-Does your organization or project use EasyNavigationBar? Please let me know by email. John, jieyuanz24k@gmail.com
+Does your organization or project use EasyNavigationBar? Please let me know by email. John, jieyuanz24@gmail.com
 
 ## License 
 
