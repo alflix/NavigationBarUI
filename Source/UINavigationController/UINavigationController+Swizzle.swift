@@ -55,7 +55,7 @@ public extension UINavigationController {
                         viewController.viewIsInteractiveTransition = false
                         return
                     }
-                    self.navigationBar.setupAppearance(viewController.navigationAppearance)
+                    self.navigationBar.appearance = viewController.navigationAppearance
                 }
                 if let topVC = self.topViewController, let coordinator = topVC.transitionCoordinator,
                     coordinator.initiallyInteractive {
@@ -159,7 +159,7 @@ extension UINavigationController {
     private func dealInteractionChanges(_ context: UIViewControllerTransitionCoordinatorContext) {
         let animations: (UITransitionContextViewControllerKey) -> Void = {
             guard let viewController = context.viewController(forKey: $0) else { return }
-            self.navigationBar.setupAppearance(viewController.navigationAppearance)
+            self.navigationBar.appearance = viewController.navigationAppearance
         }
 
         // 完成返回手势的取消事件

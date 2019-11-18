@@ -17,7 +17,18 @@ public struct Config {
     public static var appearance: NavigationAppearance = NavigationAppearance()
 }
 
-public struct NavigationAppearance {
+public struct NavigationAppearance: Equatable {
+    public static func == (lhs: NavigationAppearance, rhs: NavigationAppearance) -> Bool {
+        return lhs.isNavigationBarHidden == rhs.isNavigationBarHidden &&
+            lhs.isShowShadowLine == rhs.isShowShadowLine &&
+            lhs.shadowColor == rhs.shadowColor &&
+            lhs.backgroundAlpha == rhs.backgroundAlpha &&
+            lhs.barTintColor == rhs.barTintColor &&
+            lhs.tintColor == rhs.tintColor &&
+            lhs.titleTextAttributes == rhs.titleTextAttributes
+        lhs.barButtonItemTitleTextAttributes == rhs.barButtonItemTitleTextAttributes
+    }
+
     /// 是否隐藏导航栏，默认不隐藏，如果 true，下面的所有属性都不起作用
     public var isNavigationBarHidden = false
     /// 是否显示底部的横线，默认显示
@@ -31,7 +42,7 @@ public struct NavigationAppearance {
     /// 按钮控件的颜色，不同的颜色之间会有渐变的切换效果, 默认为 UINavigationBar.appearance().tintColor
     public var tintColor: UIColor = .black
     /// 标题 TextAttributes
-    public var titleTextAttributes: [NSAttributedString.Key: Any]? = UINavigationBar.appearance().titleTextAttributes
+    public var titleTextAttributes: TextAttributesItem = TextAttributesItem()
     /// 左右控件的 TextAttributes
     public var barButtonItemTitleTextAttributes: BarButtonItemTitleTextAttributes = BarButtonItemTitleTextAttributes()
 
@@ -43,7 +54,8 @@ public struct NavigationAppearance {
                 backgroundAlpha: CGFloat = 1.0,
                 barTintColor: UIColor? = UINavigationBar.appearance().barTintColor,
                 tintColor: UIColor = .black,
-                titleTextAttributes: [NSAttributedString.Key: Any]? = UINavigationBar.appearance().titleTextAttributes) {
+                titleTextAttributes: TextAttributesItem,
+                barButtonItemTitleTextAttributes: BarButtonItemTitleTextAttributes) {
         self.isNavigationBarHidden = isNavigationBarHidden
         self.isShowShadowLine = isShowShadowLine
         self.shadowColor = shadowColor
@@ -51,11 +63,46 @@ public struct NavigationAppearance {
         self.barTintColor = barTintColor
         self.tintColor = tintColor
         self.titleTextAttributes = titleTextAttributes
+        self.barButtonItemTitleTextAttributes = barButtonItemTitleTextAttributes
     }
 }
 
-public struct BarButtonItemTitleTextAttributes {
-    public var normal: [NSAttributedString.Key: Any]?
-    public var highlighted: [NSAttributedString.Key: Any]?
-    public var disabled: [NSAttributedString.Key: Any]?
+public struct BarButtonItemTitleTextAttributes: Equatable {
+    public var normal: TextAttributesItem
+    public var highlighted: TextAttributesItem
+    public var disabled: TextAttributesItem
+
+    public init(normal: TextAttributesItem = TextAttributesItem(),
+                highlighted: TextAttributesItem = TextAttributesItem(),
+                disabled: TextAttributesItem = TextAttributesItem()) {
+        self.normal = normal
+        self.highlighted = highlighted
+        self.disabled = disabled
+    }
+
+    public static func == (lhs: BarButtonItemTitleTextAttributes, rhs: BarButtonItemTitleTextAttributes) -> Bool {
+        return lhs.normal == rhs.normal &&
+            lhs.highlighted == rhs.highlighted &&
+            lhs.disabled == rhs.disabled
+    }
+}
+
+public struct TextAttributesItem: Equatable {
+    public var font: UIFont
+    public var color: UIColor
+
+    public init(font: UIFont = UIFont.systemFont(ofSize: 14, weight: .medium),
+                color: UIColor = UIColor.black) {
+        self.font = font
+        self.color = color
+    }
+
+    public static func == (lhs: TextAttributesItem, rhs: TextAttributesItem) -> Bool {
+        return lhs.font == rhs.font &&
+            lhs.color == rhs.color
+    }
+
+    var attributed: [NSAttributedString.Key: Any] {
+        return [.foregroundColor: color, .font: font]
+    }
 }
