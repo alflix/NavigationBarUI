@@ -3,7 +3,7 @@
 //  EasyNavigationBar
 //
 //  Created by John on 2018/10/13.
-//  Copyright © 2018年 Ganguo. All rights reserved.
+//  Copyright © 2018年 EasyNavigationBar. All rights reserved.
 //
 
 import UIKit

@@ -3,7 +3,7 @@
 //  EasyNavigationBar
 //
 //  Created by John on 2019/8/16.
-//  Copyright © 2019年 Ganguo. All rights reserved.
+//  Copyright © 2019年 EasyNavigationBar. All rights reserved.
 //
 
 import UIKit
@@ -25,7 +25,7 @@ public extension UIViewController {
     }
 
     fileprivate struct AssociatedKey {
-        static var viewWillAppearHandlerWrapper: String = "com.ganguo.viewWillAppear"
+        static var viewWillAppearHandlerWrapper: String = "com.EasyNavigationBar.viewWillAppear"
     }
 
     var viewWillAppearHandler: ViewWillAppearBlock? {

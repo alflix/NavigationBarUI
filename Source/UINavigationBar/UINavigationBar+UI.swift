@@ -10,7 +10,7 @@ import UIKit
 
 public extension UINavigationBar {
     fileprivate struct AssociatedKey {
-        static var appearanceKey: String = "com.ganguo.appearanceKey"
+        static var appearanceKey: String = "com.EasyNavigationBar.appearanceKey"
     }
 
     /// 控制器上的导航栏样式，若不设置，以其 navigationController 的为准
