@@ -23,6 +23,7 @@ class SecondViewController: UIViewController {
     }
 
     @objc func push() {
-        navigationController?.pushViewController(ViewController(), animated: true)
+        let viewController = storyboard?.instantiateViewController(withIdentifier: "ViewController")
+        navigationController?.pushViewController(viewController!, animated: true)
     }
 }

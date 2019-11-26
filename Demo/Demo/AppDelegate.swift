@@ -16,8 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.backgroundColor = .white
         UIViewController.swizzleViewWillAppear()
         UINavigationController.swizzle()
-        NavigationBarConfig.debugMode = true
-        NavigationBarConfig.backIconImage = UIImage(named: "0")
+        Config.debugMode = true
+        Config.backIconImage = UIImage(named: "0")
         return true
     }
 }
