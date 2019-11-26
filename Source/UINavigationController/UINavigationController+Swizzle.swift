@@ -45,7 +45,7 @@ public extension UINavigationController {
     }
 
     @objc private func swizzle_pushViewController(_ viewController: UIViewController, animated: Bool) {
-        let block: ViewWillAppearBlock = { [weak self] (viewController, animated) in
+        let viewWillAppearBlock: ViewWillAppearBlock = { [weak self] (viewController, animated) in
             guard let self = self else { return }
             self.setNavigationBarHidden(viewController.navigationAppearance.isNavigationBarHidden, animated: animated)
             // 由于 iOS 13 不响应 UINavigationBarDelegate
@@ -65,9 +65,20 @@ public extension UINavigationController {
                 }
             }
         }
-        viewController.viewWillAppearHandler = block
+        let viewDidAppearBlock: ViewDidAppearBlock = { (viewController) in
+            // 由于 iOS 13 不响应 UINavigationBarDelegate
+            if #available(iOS 13, *) {
+                viewController.viewIsInteractiveTransition = false
+            }
+        }
+
+        viewController.viewWillAppearHandler = viewWillAppearBlock
+        viewController.viewDidAppearHandler = viewDidAppearBlock
         if let disappearingViewController = viewControllers.last, disappearingViewController.viewWillAppearHandler == nil {
-            disappearingViewController.viewWillAppearHandler = block
+            disappearingViewController.viewWillAppearHandler = viewWillAppearBlock
+        }
+        if let disappearingViewController = viewControllers.last, disappearingViewController.viewDidAppearHandler == nil {
+            disappearingViewController.viewDidAppearHandler = viewDidAppearBlock
         }
         pushTransaction {
             swizzle_pushViewController(viewController, animated: animated)

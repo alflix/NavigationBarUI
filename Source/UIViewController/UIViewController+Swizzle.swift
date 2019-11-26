@@ -9,6 +9,7 @@
 import UIKit
 
 public typealias ViewWillAppearBlock = (_ viewController: UIViewController, _ animated: Bool) -> Void
+public typealias ViewDidAppearBlock = (_ viewController: UIViewController) -> Void
 
 public extension UIViewController {
     static func swizzleViewWillAppear() {
@@ -19,6 +20,10 @@ public extension UIViewController {
                 #selector(UIViewController.swizzle_viewWillAppear(_:)))
             swizzling(
                 UIViewController.self,
+                #selector(UIViewController.viewDidAppear(_:)),
+                #selector(UIViewController.swizzle_viewDidAppear(_:)))
+            swizzling(
+                UIViewController.self,
                 #selector(UIViewController.addChild(_:)),
                 #selector(UIViewController.swizzle_addChild(_:)))
         }
@@ -26,18 +31,31 @@ public extension UIViewController {
 
     fileprivate struct AssociatedKey {
         static var viewWillAppearHandlerWrapper: String = "com.EasyNavigationBar.viewWillAppear"
+        static var viewDidAppearHandlerWrapper: String = "com.EasyNavigationBar.viewDidAppear"
         static var viewIsInteractiveTransition: String = "com.EasyNavigationBar.viewIsInteractiveTransition"
     }
 
     var viewWillAppearHandler: ViewWillAppearBlock? {
         get {
-            if let block = associatedObject(forKey: &AssociatedKey.viewWillAppearHandlerWrapper) as? ViewWillAppearBlock {
-                return block
+            guard let block = associatedObject(forKey: &AssociatedKey.viewWillAppearHandlerWrapper) as? ViewWillAppearBlock else {
+                return nil
             }
-            return nil
+            return block
         }
         set {
             associate(copyObject: newValue, forKey: &AssociatedKey.viewWillAppearHandlerWrapper)
+        }
+    }
+
+    var viewDidAppearHandler: ViewDidAppearBlock? {
+        get {
+            guard let block = associatedObject(forKey: &AssociatedKey.viewDidAppearHandlerWrapper) as? ViewDidAppearBlock else {
+                return nil
+            }
+            return block
+        }
+        set {
+            associate(copyObject: newValue, forKey: &AssociatedKey.viewDidAppearHandlerWrapper)
         }
     }
 
@@ -57,6 +75,13 @@ public extension UIViewController {
         swizzle_viewWillAppear(animated)
         if let viewWillAppearHandler = viewWillAppearHandler {
             viewWillAppearHandler(self, animated)
+        }
+    }
+
+    @objc private func swizzle_viewDidAppear(_ animated: Bool) {
+        swizzle_viewDidAppear(animated)
+        if let viewDidAppearHandler = viewDidAppearHandler {
+            viewDidAppearHandler(self)
         }
     }
 
