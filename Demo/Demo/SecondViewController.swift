@@ -14,6 +14,7 @@ class SecondViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         navigationAppearance.backgroundAlpha = 0
+        navigationAppearance.isShowShadowLine = false
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "5")?.original, style: .plain, target: self, action: #selector(pop))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "2"), style: .plain, target: self, action: #selector(push))
     }
