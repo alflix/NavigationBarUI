@@ -25,8 +25,8 @@ public struct NavigationAppearance: Equatable {
             lhs.backgroundAlpha == rhs.backgroundAlpha &&
             lhs.barTintColor == rhs.barTintColor &&
             lhs.tintColor == rhs.tintColor &&
-            lhs.titleTextAttributes == rhs.titleTextAttributes
-        lhs.barButtonItemTitleTextAttributes == rhs.barButtonItemTitleTextAttributes
+            lhs.titleTextAttributes == rhs.titleTextAttributes &&
+            lhs.barButtonTitleAttributes == rhs.barButtonTitleAttributes
     }
 
     /// 是否隐藏导航栏，默认不隐藏，如果 true，下面的所有属性都不起作用
@@ -44,7 +44,7 @@ public struct NavigationAppearance: Equatable {
     /// 标题 TextAttributes
     public var titleTextAttributes: TextAttributesItem = TextAttributesItem()
     /// 左右控件的 TextAttributes
-    public var barButtonItemTitleTextAttributes: BarButtonItemTitleTextAttributes = BarButtonItemTitleTextAttributes()
+    public var barButtonTitleAttributes: BarButtonItemTitleTextAttributes = BarButtonItemTitleTextAttributes()
 
     public init() {}
 
@@ -55,7 +55,7 @@ public struct NavigationAppearance: Equatable {
                 barTintColor: UIColor? = UINavigationBar.appearance().barTintColor,
                 tintColor: UIColor = .black,
                 titleTextAttributes: TextAttributesItem,
-                barButtonItemTitleTextAttributes: BarButtonItemTitleTextAttributes) {
+                barButtonTitleAttributes: BarButtonItemTitleTextAttributes) {
         self.isNavigationBarHidden = isNavigationBarHidden
         self.isShowShadowLine = isShowShadowLine
         self.shadowColor = shadowColor
@@ -63,7 +63,7 @@ public struct NavigationAppearance: Equatable {
         self.barTintColor = barTintColor
         self.tintColor = tintColor
         self.titleTextAttributes = titleTextAttributes
-        self.barButtonItemTitleTextAttributes = barButtonItemTitleTextAttributes
+        self.barButtonTitleAttributes = barButtonTitleAttributes
     }
 }
 

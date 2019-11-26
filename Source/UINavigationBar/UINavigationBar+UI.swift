@@ -14,20 +14,17 @@ public extension UINavigationBar {
     }
 
     /// 控制器上的导航栏样式，若不设置，以其 navigationController 的为准
-    public var appearance: NavigationAppearance {
+    var appearance: NavigationAppearance? {
         get {
             if let value = associatedObject(forKey: &AssociatedKey.appearanceKey) as? NavigationAppearance {
                 return value
             }
-            return Config.appearance
+            return nil
         }
         set {
-            if newValue.isNavigationBarHidden {
-                associate(retainObject: newValue, forKey: &AssociatedKey.appearanceKey)
-                return
-            }
-            if newValue == appearance { return }
-            if !(isTranslucent ?? true) && newValue.backgroundAlpha <= 1 {
+            guard let newValue = newValue else { return }
+            if newValue == self.appearance { return }
+            if !isTranslucent && newValue.backgroundAlpha <= 1 {
                 DPrint("⚠️ warning: backgroundAlpha would not available when isTranslucent is false")
             }
             setupAppearance(newValue)
@@ -36,25 +33,24 @@ public extension UINavigationBar {
     }
 
     fileprivate func setupAppearance(_ appearance: NavigationAppearance) {
-        if appearance.isNavigationBarHidden { return }
         if appearance.backgroundAlpha > 0 {
             setupShadowLineStatus(isShow: appearance.isShowShadowLine, color: appearance.shadowColor)
         } else {
             setupShadowLineStatus(isShow: false, color: appearance.shadowColor)
         }
-        if appearance.barTintColor != self.appearance.barTintColor {
+        if appearance.barTintColor != self.appearance?.barTintColor {
             setupBarTintColor(appearance.barTintColor)
         }
-        if appearance.backgroundAlpha != self.appearance.backgroundAlpha {
+        if appearance.backgroundAlpha != self.appearance?.backgroundAlpha {
             setupBackgroundAlpha(appearance.backgroundAlpha)
         }
-        if appearance.titleTextAttributes != self.appearance.titleTextAttributes {
+        if appearance.titleTextAttributes != self.appearance?.titleTextAttributes {
             setupTitleTextAttributes(appearance.titleTextAttributes)
         }
-        if appearance.barButtonItemTitleTextAttributes != self.appearance.barButtonItemTitleTextAttributes {
-            setupBarButtonItemTitleTextAttributes(appearance.barButtonItemTitleTextAttributes)
+        if appearance.barButtonTitleAttributes != self.appearance?.barButtonTitleAttributes {
+            setupbarButtonTitleAttributes(appearance.barButtonTitleAttributes)
         }
-        if appearance.tintColor != self.appearance.tintColor {
+        if appearance.tintColor != self.appearance?.tintColor {
             tintColor = appearance.tintColor
         }
     }
@@ -109,7 +105,7 @@ public extension UINavigationBar {
         }
     }
 
-    func setupBarButtonItemTitleTextAttributes(_ titleTextAttributes: BarButtonItemTitleTextAttributes) {
+    func setupbarButtonTitleAttributes(_ titleTextAttributes: BarButtonItemTitleTextAttributes) {
         if #available(iOS 13, *) {
             standardAppearance.buttonAppearance.normal.titleTextAttributes = titleTextAttributes.normal.attributed
             standardAppearance.buttonAppearance.highlighted.titleTextAttributes = titleTextAttributes.highlighted.attributed
