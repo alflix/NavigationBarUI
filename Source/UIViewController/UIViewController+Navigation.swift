@@ -22,10 +22,6 @@ extension UIViewController {
             return Config.appearance
         }
         set {
-            if newValue.isNavigationBarHidden {
-                associate(retainObject: newValue, forKey: &AssociatedKey.appearanceKey)
-                return
-            }
             if let viewController = self as? UINavigationController {
                 viewController.navigationBar.appearance = newValue
             } else if let navigationController = navigationController {

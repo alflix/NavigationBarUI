@@ -39,7 +39,6 @@ public extension UINavigationController {
         }
         let fromVC = coordinator.viewController(forKey: .from)
         let toVC = coordinator.viewController(forKey: .to)
-        toVC?.viewIsInteractiveTransition = true
         updateNavigationBar(from: fromVC, to: toVC, progress: percentComplete, setupShowLine: percentComplete > 0.5)
         swizzle_updateInteractiveTransition(percentComplete)
     }
@@ -50,13 +49,7 @@ public extension UINavigationController {
             self.setNavigationBarHidden(viewController.navigationAppearance.isNavigationBarHidden, animated: animated)
             // 由于 iOS 13 不响应 UINavigationBarDelegate
             if #available(iOS 13, *) {
-                DispatchQueue.delay(0.1) {
-                    if viewController.viewIsInteractiveTransition {
-                        viewController.viewIsInteractiveTransition = false
-                        return
-                    }
-                    self.navigationBar.appearance = viewController.navigationAppearance
-                }
+                self.navigationBar.appearance = viewController.navigationAppearance
                 if let topVC = self.topViewController, let coordinator = topVC.transitionCoordinator,
                     coordinator.initiallyInteractive {
                     coordinator.notifyWhenInteractionChanges({ (context) in
