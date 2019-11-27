@@ -23,7 +23,9 @@ public extension UINavigationBar {
         }
         set {
             guard let newValue = newValue else { return }
-            if newValue == self.appearance { return }
+            if newValue == self.appearance {
+                return
+            }
             if !isTranslucent && newValue.backgroundAlpha <= 1 {
                 DPrint("⚠️ warning: backgroundAlpha would not available when isTranslucent is false")
             }
@@ -38,21 +40,11 @@ public extension UINavigationBar {
         } else {
             setupShadowLineStatus(isShow: false, color: appearance.shadowColor)
         }
-        if appearance.barTintColor != self.appearance?.barTintColor {
-            setupBarTintColor(appearance.barTintColor)
-        }
-        if appearance.backgroundAlpha != self.appearance?.backgroundAlpha {
-            setupBackgroundAlpha(appearance.backgroundAlpha)
-        }
-        if appearance.titleTextAttributes != self.appearance?.titleTextAttributes {
-            setupTitleTextAttributes(appearance.titleTextAttributes)
-        }
-        if appearance.barButtonTitleAttributes != self.appearance?.barButtonTitleAttributes {
-            setupbarButtonTitleAttributes(appearance.barButtonTitleAttributes)
-        }
-        if appearance.tintColor != self.appearance?.tintColor {
-            tintColor = appearance.tintColor
-        }
+        setupBarTintColor(appearance.barTintColor)
+        setupBackgroundAlpha(appearance.backgroundAlpha)
+        setupTitleTextAttributes(appearance.titleTextAttributes)
+        setupbarButtonTitleAttributes(appearance.barButtonTitleAttributes)
+        tintColor = appearance.tintColor
     }
 
     func updateAppearance(from appearance: NavigationAppearance, to toAppearance: NavigationAppearance, progress: CGFloat) {
@@ -68,7 +60,6 @@ public extension UINavigationBar {
     }
 
     func setupBackgroundAlpha(_ alpha: CGFloat) {
-        DPrint("change alpha: \(alpha)")
         if #available(iOS 13, *) {
             if alpha == 0 {
                 standardAppearance.configureWithTransparentBackground()
