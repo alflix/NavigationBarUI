@@ -38,7 +38,7 @@ public struct NavigationAppearance: Equatable {
     /// 背景透明度，可实现渐变效果，切换效果
     public var backgroundAlpha: CGFloat = 1.0
     /// 背景颜色，不同的背景颜色之间会有渐变的切换效果（todo）, 默认为 UINavigationBar.appearance().barTintColor （即 nil）, 此时的效果为 translucent（毛玻璃背景）
-    public var barTintColor: UIColor? = nil
+    public var barTintColor: UIColor?
     /// 按钮控件的颜色，不同的颜色之间会有渐变的切换效果, 默认为 UINavigationBar.appearance().tintColor
     public var tintColor: UIColor = .black
     /// 标题 TextAttributes

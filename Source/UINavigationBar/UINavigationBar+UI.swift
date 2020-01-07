@@ -69,7 +69,7 @@ public extension UINavigationBar {
             return
         }
         guard barBackgroundView != nil else { return }
-        /// MARK: 尝试过很多方法，isTranslucent == false 无论怎么改都没有效果
+        // MARK: 尝试过很多方法，isTranslucent == false 无论怎么改都没有效果
         guard isTranslucent else { return }
         if let backgroundEffectView = recursiveFindSubview(of: "UIVisualEffectView"),
             backgroundImage(for: .default) == nil {
@@ -114,25 +114,24 @@ public extension UINavigationBar {
                 standardAppearance.shadowColor = color
             } else {
                 if #available(iOS 11, *) {
+                    shadowImage = UIImage(color: color, size: CGSize(width: 1, height: 0.5))
+                } else {
                     if let shadow = findShadowImage(under: self) {
                         shadow.isHidden = false
                     }
-                } else {
-                    shadowImage = UIImage(color: color, size: CGSize(width: 1, height: 0.5))
                 }
             }
-
         } else {
             if #available(iOS 13, *) {
                 standardAppearance.shadowColor = .clear
             } else {
                 /// ios10 直接 shadowImage = UIImage() 无用
                 if #available(iOS 11, *) {
+                    shadowImage = UIImage()
+                } else {
                     if let shadow = findShadowImage(under: self) {
                         shadow.isHidden = true
                     }
-                } else {
-                    shadowImage = UIImage()
                 }
             }
         }

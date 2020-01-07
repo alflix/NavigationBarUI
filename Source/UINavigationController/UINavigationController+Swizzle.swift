@@ -187,6 +187,7 @@ extension UINavigationController {
             // 完成返回手势的完成事件
             let finishDuration: TimeInterval = context.transitionDuration * Double(1 - context.percentComplete)
             UIView.animate(withDuration: finishDuration) {
+                // TODO: 这个不一定是想找的控制器，有可能是 TabbarController (AXPhotoViewer dismiss 的时候遇到过)
                 animations(.to)
             }
         }
