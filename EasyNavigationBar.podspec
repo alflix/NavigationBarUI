@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.social_media_url      = 'https://github.com/alflix'
 
   s.platform              = :ios
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '10.0'
 
   s.source                = { :git => 'https://github.com/alflix/EasyNavigationBar.git', :tag => "#{s.version}" }
   s.ios.framework         = 'UIKit'
