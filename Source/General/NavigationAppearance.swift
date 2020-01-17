@@ -1,6 +1,6 @@
 //
 //  NavigationAppearance.swift
-//  EasyNavigationBar
+//  NavigationBarUI
 //
 //  Created by John on 2019/10/29.
 //  Copyright © 2019 John. All rights reserved.

@@ -3,7 +3,7 @@
 //  Demo
 //
 //  Created by John on 2019/10/17.
-//  Copyright © 2019 EasyNavigationBar. All rights reserved.
+//  Copyright © 2019 NavigationBarUI. All rights reserved.
 //
 
 import UIKit

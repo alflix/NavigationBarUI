@@ -1,9 +1,9 @@
 //
 //  UIViewController+Swizzle.swift
-//  EasyNavigationBar
+//  NavigationBarUI
 //
 //  Created by John on 2019/8/16.
-//  Copyright © 2019年 EasyNavigationBar. All rights reserved.
+//  Copyright © 2019年 NavigationBarUI. All rights reserved.
 //
 
 import UIKit
@@ -30,9 +30,9 @@ public extension UIViewController {
     }
 
     fileprivate struct AssociatedKey {
-        static var viewWillAppearHandlerWrapper: String = "com.EasyNavigationBar.viewWillAppear"
-        static var viewDidAppearHandlerWrapper: String = "com.EasyNavigationBar.viewDidAppear"
-        static var viewIsInteractiveTransition: String = "com.EasyNavigationBar.viewIsInteractiveTransition"
+        static var viewWillAppearHandlerWrapper: String = "com.NavigationBarUI.viewWillAppear"
+        static var viewDidAppearHandlerWrapper: String = "com.NavigationBarUI.viewDidAppear"
+        static var viewIsInteractiveTransition: String = "com.NavigationBarUI.viewIsInteractiveTransition"
     }
 
     var viewWillAppearHandler: ViewWillAppearBlock? {

@@ -1,6 +1,6 @@
 //
 //  UINavigationController+Swizzle.swift
-//  EasyNavigationBar
+//  NavigationBarUI
 //
 //  Created by John on 2019/3/14.
 //  Copyright © 2019 John. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  UINavigationBar+UI.swift
-//  EasyNavigationBar
+//  NavigationBarUI
 //
 //  Created by John on 2019/3/11.
 //  Copyright © 2019 John. All rights reserved.
@@ -10,7 +10,7 @@ import UIKit
 
 public extension UINavigationBar {
     fileprivate struct AssociatedKey {
-        static var appearanceKey: String = "com.EasyNavigationBar.appearanceKey"
+        static var appearanceKey: String = "com.NavigationBarUI.appearanceKey"
     }
 
     /// 控制器上的导航栏样式，若不设置，以其 navigationController 的为准
