@@ -183,6 +183,9 @@ extension UINavigationController {
             UIView.animate(withDuration: cancelDuration) {
                 animations(.from)
             }
+            if let viewController = context.viewController(forKey: .to) {
+                viewController.viewIsInteractiveTransition = false
+            }
         } else {
             // 完成返回手势的完成事件
             let finishDuration: TimeInterval = context.transitionDuration * Double(1 - context.percentComplete)
