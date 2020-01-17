@@ -3,10 +3,5 @@ inhibit_all_warnings!
 use_frameworks!
 
 target 'Demo' do
-        
-    # Tool
     pod 'SwiftLint'
-    pod 'FLEX'
-    pod 'Reusable'
-    
 end

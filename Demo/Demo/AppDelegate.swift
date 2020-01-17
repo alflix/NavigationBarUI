@@ -14,10 +14,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window?.backgroundColor = .white
+        configNavigationUI()
+        return true
+    }
+
+    func configNavigationUI() {
         UIViewController.swizzleViewWillAppear()
         UINavigationController.swizzle()
         Config.debugMode = true
         Config.backIconImage = UIImage(named: "0")
-        return true
     }
 }
